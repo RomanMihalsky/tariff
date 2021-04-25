@@ -1,0 +1,50 @@
+<nav  class="navbar navbar-expand-lg navbar-dark bg-style">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['tariff']">BInternet</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            [routerLink]="['tariff']"
+            class="nav-link"
+            aria-current="page"
+            >Тарифы</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['router']"  >Роутеры</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['about']" >О нас</a>
+        </li>
+      </ul>
+      <app-digital-clock></app-digital-clock>
+      
+      <button class="btn btn btn-danger" (click)="logOut()" type="button">Выйти</button>
+    </div>
+  </div>
+</nav>
+<router-outlet></router-outlet>
+<footer >
+  <div class="container">
+    <ul class="foote_bottom_ul_amrc">
+      <li><a [routerLink]="['tariff']">Тарифы</a></li>
+      <li><a [routerLink]="['router']">Роутеры</a></li>
+      <li><a [routerLink]="['about']">О нас</a></li>
+    </ul>
+    <!--foote_bottom_ul_amrc ends here-->
+    <p class="text-center">BInternet @2021 | от <a href="#">BInternet</a></p>
+  </div>
+</footer>

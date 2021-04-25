@@ -1,0 +1,181 @@
+<div class="container margin-t" id="main-container">
+    <div>
+        <button class="btn btn-success btn-sm-3" (click)="onOpenModal(null!, 'add')" >Добавить</button>
+     </div>
+    <div class="row clearfix">
+            <div *ngFor="let tariff of tariffs" class="col-md-3 col-sm-6 col-xs-12 margin-t">
+                <div class="boxs project_widget">
+                     <div class="pw_img">
+                        <img class="img-responsive" src="{{tariff?.imageUrl}}" width="280px" height="280px" alt="About the image">
+                    </div>
+                    <div class="pw_content">
+                        <div class="pw_header">
+                            <h6>Название:{{tariff?.name}}</h6>
+                        </div>
+                        <div class="pw_meta">
+                            <span>Стоимость:   {{tariff?.price}} р</span>
+                            <span>Скорость:   {{tariff?.speed}} мб/с</span>
+                            <span *ngIf="tariff.wifi">Вместе с роутером</span>
+                            <span *ngIf="!tariff.wifi">Без роутера</span>
+                            <div class="float-right btn-group btn-group-sm">
+                                <a (click)="onOpenModal(tariff, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                                <a (click)="onOpenModal(tariff, 'delete')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Add Tariff Modal -->
+<div class="modal fade" id="addTariffModal" tabindex="-1" role="dialog" aria-labelledby="addTariffModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="addTariffModalLabel">Добавить тариф</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #addForm="ngForm" (ngSubmit)="onAddTariff(addForm)">
+            <div class="form-group">
+               <label for="name">Название</label>
+               <input type="text" ngModel #name="ngModel" name="name" class="form-control" id="name" placeholder="Название" required>
+               <div *ngIf="name.invalid && (name.dirty || name.touched)">
+                <small *ngIf="name.errors.required" class="validation">
+                    Обязательное поле.
+                </small>
+             </div>
+            </div>
+            
+            <div class="form-group">
+               <label for="speed">Скорость</label>
+               <input type="speed" ngModel #speed="ngModel" name="speed" class="form-control" id="speed" placeholder="Скорость" required>
+               <div *ngIf="speed.invalid && (speed.dirty || speed.touched)">
+                  <small *ngIf="speed.errors.required" class="validation">
+                      Обязательное поле.
+                  </small>
+                  </div>
+            </div>
+            
+            <div class="form-group">
+               <label for="price">Стоимость</label>
+               <input type="price" ngModel #price="ngModel" name="price" class="form-control" id="price" placeholder="Стоимость" required>
+               <div *ngIf="price.invalid && (price.dirty || price.touched)">
+                  <small *ngIf="price.errors.required" class="validation">
+                      Обязательное поле.
+                  </small>
+               </div>
+            </div>
+            <div class="form-group">
+               <label for="imageUrl">URL Фото</label>
+               <input type="imageUrl" ngModel #imageUrl="ngModel" name="imageUrl" class="form-control" id="imageUrl" placeholder="Url" required>
+               <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)">
+                  <small *ngIf="imageUrl.errors.required" class="validation">
+                      Обязательное поле.
+                  </small>
+               </div>
+            </div>
+            <div hidden class="form-group">
+               <label for="wifi">Wifi</label>
+               <input type="input" ngModel #wifi="ngModel" value="true" name="wifi" class="form-control" id="wifi" placeholder="Wifi">
+               <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)">
+                  <small *ngIf="imageUrl.errors.required" class="validation">
+                      Обязательное поле.
+                  </small>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" id="add-tariff-form" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+               <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Сохранить изменения</button>
+            </div>
+         </form>
+      </div>
+   </div>
+ </div>
+ </div>
+
+
+ <!-- Edit Modal -->
+ <div class="modal fade" id="updateTariffModal" tabindex="-1" role="dialog" aria-labelledby="tariffEditModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="updateTariffModalLabel">Редактор тарифа {{editTariff?.name}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #editForm="ngForm">
+             <div class="form-group">
+                <label for="name">Название</label>
+                <input type="text" ngModel="{{editTariff.name}}" name="name" #name2="ngModel" class="form-control" id="name" placeholder="Название" required >
+                <div *ngIf="name.invalid && (name.dirty || name.touched)">
+                     <small *ngIf="name.errors.required" class="validation">
+                         Обязательное поле.
+                     </small>
+                  </div>
+             </div>
+             <input type="hidden" ngModel="{{editTariff?.id}}" name="id" class="form-control" id="id">          
+             <div class="form-group">
+                <label for="speed">Скорость</label>
+                <input type="text" ngModel="{{editTariff.speed}}" #speed="ngModel" name="speed" class="form-control" id="speed" placeholder="Скорость" required>
+                <div *ngIf="speed.invalid && (speed.dirty || speed.touched)">
+                 <small *ngIf="speed.errors.required" class="validation">
+                     Обязательное поле.
+                 </small>
+              </div>
+             </div>
+             <div class="form-group">
+                <label for="price">Цена</label>
+                <input type="text" ngModel="{{editTariff.price}}" name="price" #price="ngModel" class="form-control" id="price" placeholder="Цена" required>
+                <div *ngIf="price.invalid && (price.dirty || price.touched)">
+                 <small *ngIf="price.errors.required" class="validation">
+                     Обязательное поле.
+                 </small>
+                 </div>
+             </div>
+             <div class="form-group">
+                <label for="imageUrl">URL Картинки</label>
+                <input type="text" ngModel="{{editTariff.imageUrl}}" name="imageUrl" #imageUrl="ngModel" class="form-control" id="imageUrl" placeholder="URL" required>
+                <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)">
+                 <small *ngIf="imageUrl.errors.required" class="validation">
+                     Обязательное поле.
+                 </small>
+                 </div>
+             </div>
+               <div class="modal-footer">
+                  <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Закрыть</button>
+                  <button [disabled]="editForm.invalid" (click)="onUpdateTariff(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Сохранить изменения</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+ </div>
+ 
+ <!-- Delete Modal -->
+ <div class="modal fade" id="deleteTariffModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="deleteModelLabel">Удалить тариф</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <p>Вы действительно хотите удалить тариф: {{deleteTariff?.name}}?</p>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+               <button (click)="onDeleteTariff(deleteTariff.id)" class="btn btn-danger" data-dismiss="modal">Да</button>
+            </div>
+         </div>
+      </div>
+   </div>
+ </div>
+
+

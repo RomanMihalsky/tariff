@@ -1,0 +1,187 @@
+<div class="container margin-t" id="main-container">
+    <div>
+        <button class="btn btn-success btn-sm-3" (click)="onOpenModal(null!, 'add')" >Добавить</button>
+     </div>
+    <div class="row clearfix">
+            <div *ngFor="let routerR of routerRs" class="col-md-3 col-sm-6 col-xs-12 margin-t">
+                <div class="boxs project_widget">
+                     <div class="pw_img">
+                        <img class="img-responsive" src="{{routerR?.imageUrl}}" width="280px" height="280px" alt="About the image">
+                    </div>
+                    <div class="pw_content">
+                        <div class="pw_header">
+                            <h6>Название:{{routerR?.name}}</h6>
+                        </div>
+                        <div class="pw_meta">
+                            <span>Производитель:   {{routerR?.company}} </span>
+                            <span>Стоимость:   {{routerR?.price}} р</span>
+                            <small class="text-muted">{{routerR?.description}}</small>
+                            <div class="float-right btn-group btn-group-sm">
+                                <a (click)="onOpenModal(routerR, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                                <a (click)="onOpenModal(routerR, 'delete')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Add RouterR Modal -->
+<div class="modal fade" id="addRouterRModal" tabindex="-1" role="dialog" aria-labelledby="addRouterRModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="addRouterRModalLabel">Добавить роутер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #addForm="ngForm" (ngSubmit)="onAddRouterR(addForm)">
+            <div class="form-group">
+               <label for="name">Название</label>
+               <input type="text" ngModel #name="ngModel" name="name" class="form-control" id="name" placeholder="Название" required>
+               <div *ngIf="name.invalid && (name.dirty || name.touched)">
+                <small *ngIf="name.errors.required" class="validation">
+                    Обязательное поле.
+                </small>
+             </div>
+            </div>
+            <div class="form-group">
+               <label for="price">Стоимость</label>
+               <input type="price" ngModel #price="ngModel" name="price" class="form-control" id="price" placeholder="Стоимость" required>
+               <div *ngIf="price.invalid && (price.dirty || price.touched)">
+                  <small *ngIf="price.errors.required" class="validation">
+                      Обязательное поле.
+                  </small>
+               </div>
+            </div>
+            <div class="form-group">
+               <label for="imageUrl">URL Фото</label>
+               <input type="imageUrl" ngModel #imageUrl="ngModel" name="imageUrl" class="form-control" id="imageUrl" placeholder="Url" required>
+               <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)">
+                  <small *ngIf="imageUrl.errors.required" class="validation">
+                      Обязательное поле.
+                  </small>
+               </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Описание</label>
+                <input type="description" ngModel #description="ngModel" name="description" class="form-control" id="description" placeholder="Описание" required>
+                <div *ngIf="description.invalid && (description.dirty || description.touched)">
+                   <small *ngIf="description.errors.required" class="validation">
+                       Обязательное поле.
+                   </small>
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="company">Производитель</label>
+                <input type="company" ngModel #company="ngModel" name="company" class="form-control" id="company" placeholder="Производитель" required>
+                <div *ngIf="company.invalid && (company.dirty || company.touched)">
+                   <small *ngIf="company.errors.required" class="validation">
+                       Обязательное поле.
+                   </small>
+                </div>
+             </div>
+            <div class="modal-footer">
+               <button type="button" id="add-routerr-form" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+               <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Сохранить изменения</button>
+            </div>
+         </form>
+      </div>
+   </div>
+ </div>
+ </div>
+
+
+ <!-- Edit Modal -->
+ <div class="modal fade" id="updateRouterRModal" tabindex="-1" role="dialog" aria-labelledby="routerREditModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="updateRouterRModalLabel">Редактор роутера {{editRouterR?.name}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #editForm="ngForm">
+             <div class="form-group">
+                <label for="name">Название</label>
+                <input type="text" ngModel="{{editRouterR.name}}" name="name" #name2="ngModel" class="form-control" id="name" placeholder="Название" required >
+                <div *ngIf="name.invalid && (name.dirty || name.touched)">
+                     <small *ngIf="name.errors.required" class="validation">
+                         Обязательное поле.
+                     </small>
+                  </div>
+             </div>
+             <input type="hidden" ngModel="{{editRouterR?.id}}" name="id" class="form-control" id="id">   
+             <div class="form-group">
+                <label for="price">Цена</label>
+                <input type="text" ngModel="{{editRouterR.price}}" name="price" #price="ngModel" class="form-control" id="price" placeholder="Цена" required>
+                <div *ngIf="price.invalid && (price.dirty || price.touched)">
+                 <small *ngIf="price.errors.required" class="validation">
+                     Обязательное поле.
+                 </small>
+                 </div>
+             </div>
+             <div class="form-group">
+                <label for="imageUrl">URL Картинки</label>
+                <input type="text" ngModel="{{editRouterR.imageUrl}}" name="imageUrl" #imageUrl="ngModel" class="form-control" id="imageUrl" placeholder="URL" required>
+                <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)">
+                 <small *ngIf="imageUrl.errors.required" class="validation">
+                     Обязательное поле.
+                 </small>
+                 </div>
+             </div>
+             <div class="form-group">
+                <label for="description">Описание</label>
+                <input type="text" ngModel="{{editRouterR.description}}" name="description" #description="ngModel" class="form-control" id="description" placeholder="Описание" required>
+                <div *ngIf="description.invalid && (description.dirty || description.touched)">
+                 <small *ngIf="description.errors.required" class="validation">
+                     Обязательное поле.
+                 </small>
+                 </div>
+             </div>
+             <div class="form-group">
+                <label for="company">Производитель</label>
+                <input type="text" ngModel="{{editRouterR.company}}" name="company" #company="ngModel" class="form-control" id="company" placeholder="Производитель" required>
+                <div *ngIf="company.invalid && (company.dirty || company.touched)">
+                 <small *ngIf="company.errors.required" class="validation">
+                     Обязательное поле.
+                 </small>
+                 </div>
+             </div>
+               <div class="modal-footer">
+                  <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Закрыть</button>
+                  <button [disabled]="editForm.invalid" (click)="onUpdateRouterR(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Сохранить изменения</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+ </div>
+ 
+ <!-- Delete Modal -->
+ <div class="modal fade" id="deleteRouterRModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="deleteModelLabel">Удалить роутер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <p>Вы действительно хотите удалить роутер: {{deleteRouterR?.name}}?</p>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+               <button (click)="onDeleteRouterR(deleteRouterR.id)" class="btn btn-danger" data-dismiss="modal">Да</button>
+            </div>
+         </div>
+      </div>
+   </div>
+ </div>
+
+

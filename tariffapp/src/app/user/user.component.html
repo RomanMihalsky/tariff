@@ -1,0 +1,24 @@
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <img src="" id="icon" />
+      </div>
+  
+      <!-- Login Form -->
+      <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
+        <input type="text" id="username" class="fadeIn second" placeholder="имя пользователя" name="username" ngModel #usernameInput="ngModel" required>
+        <span class="help-block" style="color:red;"
+              *ngIf="usernameInput.invalid && usernameInput.touched">Введите имя пользователя</span>
+
+        <input type="text" id="password" class="fadeIn third" name="password" placeholder="пароль" ngModel
+        #passwordInput="ngModel" required>
+        <span class="help-block" style="color:red;"
+              *ngIf="passwordInput.invalid && passwordInput.touched">Введите пароль.</span>     
+        <input type="submit" [disabled]="loginForm.invalid" class="fadeIn fourth" value="Войти">
+      </form>
+  
+    </div>
+  </div>
